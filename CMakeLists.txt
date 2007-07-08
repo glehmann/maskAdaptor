@@ -1,5 +1,5 @@
 #Change PROJECT_NAME to the name of your project
-PROJECT()
+PROJECT(maskedAdaptor)
 
 # set the name of the input image used to run the test
 SET(INPUT_IMAGE ${CMAKE_SOURCE_DIR}/images/cthead1.png)
@@ -10,7 +10,10 @@ INCLUDE(IJMacros.txt)
 #The following lines are required to use Dart
 ENABLE_TESTING()
 INCLUDE(Dart)
-FIND_PROGRAM(IMAGE_COMPARE ImageCompare)
+FIND_PROGRAM(ITK_TEST_DRIVER itkTestDriver)
+SET(TEST_COMMAND ${ITK_TEST_DRIVER} --add-before-env PATH ${CMAKE_BINARY_DIR})
+
+#FIND_PROGRAM(IMAGE_COMPARE ImageCompare)
 
 #Declare any external dependencies that your project may have here.
 #examples include: ITK, VTK, JPEG, PNG, OpenGL, ZLIB, Perl, Java
@@ -32,6 +35,7 @@ SET(Libraries
   ITKCommon
   ITKBasicFilters
   ITKIO
+  ITKStatistics
 )
 
 
@@ -76,5 +80,8 @@ ENDIF(BUILD_TESTING)
 #any tests you can comment out or delete the following line.
 # ADD_TEST(Testname ExecutableToRun arg1 arg2 arg3)
 
-ADD_TEST(Run check ${INPUT_IMAGE} out.png)
-ADD_TEST(CompareImage ${IMAGE_COMPARE} out.png ${CMAKE_SOURCE_DIR}/images/test.png)
+ADD_TEST(Test ${TEST_COMMAND}
+   check ${INPUT_IMAGE} normal.png masked.png
+   --compare masked.png ${CMAKE_SOURCE_DIR}/images/maskB.png
+)
+
