@@ -45,7 +45,7 @@ int main(int, char * argv[])
   masker->SetFilter(maskotsu);
   masker->SetInput(reader->GetOutput());
   masker->SetMaskImage(thresh->GetOutput());
-
+  masker->SetDefaultValue(0);
   writer->SetInput( masker->GetOutput() );
   writer->SetFileName( argv[3] );
   writer->Update();
