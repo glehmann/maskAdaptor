@@ -79,6 +79,11 @@ masking approaches.
  breaks streaming rules and may only be useful for histogram
  operations.
 
+ The most recent versions of this packages can be obtained from
+ \url{http://voxel.jouy.inra.fr/darcsweb/}\footnote{ The most recent
+ versions can be obtained using darcs \cite{DarcsWebSite} with the
+ command {\em darcs get
+ http://voxel.jouy.inra.fr/\\darcs/contrib-itk/maskAdaptor}}
 \section{Usage}
 The new filter is called the {\em itkMaskAdaptorImageFilter} and can
 be used as follows\footnote{This code is in check.cxx, included in the
@@ -150,7 +155,7 @@ mask. The latter requires declaring the Otsu threshold using the
 internal image types defined by the MaskAdaptorType.
 
 Results of the various steps are shown in Figures \ref{mask} and
-\ref{maskotsu}.
+\ref{maskotsu}. 
 
 \begin{figure}[htbp]
 \centering
@@ -170,6 +175,17 @@ Results of the various steps are shown in Figures \ref{mask} and
 \caption{The threshold calculated within the mask region. The padded region is separated from the original background.\label{maskotsu}}
 \end{figure}
 
+\section{Methods}
+\begin{itemize}
+\item {\bf Set/GetFilter} : Set/Get the user defined filter applied to the masked region.
+\item {\bf Set/GetMaskImage} : Set/Get the mask image.
+\item {\bf Set/GetInputFilter} : Set/Get the start of a processing pipeline.
+\item {\bf Set/GetOutputFilter} : Set/Get the end of a processing pipeline.
+\item {\bf Set/GetDefaultValue} : Set/Get the output value where the mask is zero.
+\item {\bf Set/GetPassOutsideMask} : Set/Get (boolean) whether the output is copied from the input where the mask is zero. Overrides DefaultValue.
+\end{itemize}
+
+
 \section{Comments}
 The best strategy for implementing this filter isn't clear to me. The
 necessity for allocating different buffers and copying the results of
@@ -180,7 +196,7 @@ this, and any advice on improvements are welcome.
 
 
 \bibliographystyle{plain}
-\bibliography{InsightJournal}
+\bibliography{InsightJournal,local}
 \nocite{ITKSoftwareGuide}
 
 \end{document}
