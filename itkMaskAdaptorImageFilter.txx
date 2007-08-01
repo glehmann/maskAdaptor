@@ -16,6 +16,7 @@ MaskAdaptorImageFilter<TInputImage, TMaskImage, TOutputImage, TInputFilter, TOut
   m_InputFilter = NULL;
   m_OutputFilter = NULL;
   m_DefaultValue = NumericTraits<OutputPixelType>::Zero;
+  m_PassOutsideMask = false;
 }
 
 
@@ -36,7 +37,7 @@ MaskAdaptorImageFilter<TInputImage, TMaskImage, TOutputImage, TInputFilter, TOut
   inputPtr->SetRequestedRegion(inputPtr->GetLargestPossibleRegion());
 
   typename MaskImageType::Pointer  maskPtr =
-    const_cast< MaskImageType * >( this->GetInput( 1 ) );
+    const_cast< MaskImageType * >( this->GetMaskImage() );
   
   if ( !maskPtr )
     { return; }
@@ -181,21 +182,40 @@ MaskAdaptorImageFilter<TInputImage, TMaskImage, TOutputImage, TInputFilter, TOut
   typedef typename itk::ImageRegionIterator<OutputImageType> OutputIterType;
   OutputIterType outIt(outputPtr, requestedRegion);
   OneDOutIterType resultIt(result, result->GetLargestPossibleRegion());
-  
-  for (maskIt.GoToBegin(), outIt.GoToBegin(), resultIt.GoToBegin(); 
-       !maskIt.IsAtEnd(); ++maskIt, ++outIt)
+
+  if (m_PassOutsideMask)
     {
-    if (maskIt.Get()) 
+    for (maskIt.GoToBegin(), outIt.GoToBegin(), inIt.GoToBegin(), resultIt.GoToBegin(); 
+	 !maskIt.IsAtEnd(); ++maskIt, ++outIt, ++inIt)
       {
-      outIt.Set(resultIt.Get());
-      ++resultIt;
+      if (maskIt.Get()) 
+	{
+	outIt.Set(resultIt.Get());
+	++resultIt;
+	}
+      else
+	{
+	outIt.Set(static_cast<OutputPixelType>(inIt.Get()));
+	}
       }
-    else
+
+    }
+  else
+    {
+    for (maskIt.GoToBegin(), outIt.GoToBegin(), resultIt.GoToBegin(); 
+	 !maskIt.IsAtEnd(); ++maskIt, ++outIt)
       {
-      outIt.Set(m_DefaultValue);
+      if (maskIt.Get()) 
+	{
+	outIt.Set(resultIt.Get());
+	++resultIt;
+	}
+      else
+	{
+	outIt.Set(m_DefaultValue);
+	}
       }
     }
-
   
 }
 
