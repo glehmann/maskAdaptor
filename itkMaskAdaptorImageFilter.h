@@ -115,10 +115,12 @@ public:
 
   itkSetMacro(DefaultValue, OutputPixelType);
   itkGetMacro(DefaultValue, OutputPixelType);
+
   // setting pass outside mask to true leads to non mask pixels being
   // copied from the input image instead of being set to DefaultValue.
   itkSetMacro(PassOutsideMask, OutputPixelType);
   itkGetMacro(PassOutsideMask, OutputPixelType);
+
 
 protected:
   MaskAdaptorImageFilter();
@@ -135,7 +137,9 @@ private:
   MaskAdaptorImageFilter(const Self&); //purposely not implemented
   void operator=(const Self&); //purposely not implemented
   OutputPixelType m_DefaultValue;
+
   bool m_PassOutsideMask;
+
 };
 
 }

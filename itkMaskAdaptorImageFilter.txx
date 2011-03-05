@@ -17,6 +17,7 @@ MaskAdaptorImageFilter<TInputImage, TMaskImage, TOutputImage, TInputFilter, TOut
   m_OutputFilter = NULL;
   m_DefaultValue = NumericTraits<OutputPixelType>::Zero;
   m_PassOutsideMask = false;
+
 }
 
 
@@ -115,7 +116,7 @@ MaskAdaptorImageFilter<TInputImage, TMaskImage, TOutputImage, TInputFilter, TOut
     itkExceptionMacro("Filters must be set.");
     }
 
-  for( int i=1; i<this->GetNumberOfInputs(); i++)
+  for( unsigned i=1; i<this->GetNumberOfInputs(); i++)
     {
     if ( this->GetInput()->GetRequestedRegion().GetSize() != this->GetInput( i )->GetRequestedRegion().GetSize() )
       {
@@ -198,7 +199,6 @@ MaskAdaptorImageFilter<TInputImage, TMaskImage, TOutputImage, TInputFilter, TOut
 	outIt.Set(static_cast<OutputPixelType>(inIt.Get()));
 	}
       }
-
     }
   else
     {
@@ -215,8 +215,7 @@ MaskAdaptorImageFilter<TInputImage, TMaskImage, TOutputImage, TInputFilter, TOut
 	outIt.Set(m_DefaultValue);
 	}
       }
-    }
-  
+    }  
 }
 
 
