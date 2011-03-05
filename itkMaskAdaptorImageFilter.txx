@@ -53,7 +53,7 @@ void
 MaskAdaptorImageFilter<TInputImage, TMaskImage, TOutputImage, TInputFilter, TOutputFilter, TInternalInputImageType, TInternalOutputImageType>
 ::EnlargeOutputRequestedRegion(DataObject *)
 {
-  for( int i=0; i<this->GetNumberOfOutputs(); i++)
+  for( unsigned i=0; i<this->GetNumberOfOutputs(); i++)
     {
     this->GetOutput( i )->SetRequestedRegion( this->GetOutput( i )->GetLargestPossibleRegion() );
     }
